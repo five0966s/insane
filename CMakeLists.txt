@@ -10,12 +10,13 @@ source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}/src" FILES ${SOURCES})
 
 add_library(Insane_tf2 SHARED ${SOURCES})
 
+# Project must be built with MSVC (cl.exe).
 if(NOT MSVC)
   message(FATAL_ERROR "This project must be built with MSVC (cl.exe).")
 endif()
 
 #//////////////////////////////////////////////////
-# Linking DirectX9 library (Corrected for GitHub)
+# Linking DirectX9 library
 #//////////////////////////////////////////////////
 target_link_libraries(Insane_tf2 PRIVATE d3d9 d3dx9)
 
