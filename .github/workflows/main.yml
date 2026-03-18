@@ -3,7 +3,7 @@ name: Build INSANE.tf2
 on:
   push:
     branches: [ "main" ]
-  workflow_dispatch: # Allows you to run it manually
+  workflow_dispatch:
 
 jobs:
   build:
@@ -18,19 +18,15 @@ jobs:
       with:
         arch: x64
 
-    - name: Download DirectX 9 SDK
-      shell: powershell
-      run: |
-        $url = "https://download.microsoft.com/download/A/E/7/AE743F1F-6941-49F9-858E-F8653B3AD1A4/directx_jun2010_redist.exe"
-        Invoke-WebRequest -Uri $url -OutFile "dxsdk.exe"
-        # Extract to a shorter path for easier linking
-        Start-Process -FilePath "dxsdk.exe" -ArgumentList "/Q /T:C:\dxsdk" -Wait
+    - name: Install DirectX SDK (June 2010)
+      # This uses Chocolatey to find and install the SDK automatically
+      run: choco install directx-sdk -y
 
     - name: Configure CMake
-      # This runs the command from your CreateBuildFiles.bat 
-      run: cmake -G "Visual Studio 17 2022" -A x64 -S . -B Build
+      # We tell CMake exactly where the SDK was installed
+      run: cmake -G "Visual Studio 17 2022" -A x64 -S . -B Build -DDXSDK_DIR="C:/Program Files (x86)/Microsoft DirectX SDK (June 2010)"
 
-    - name: Build Release
+    - name: Build Project
       run: cmake --build Build --config Release
 
     - name: Upload DLL
