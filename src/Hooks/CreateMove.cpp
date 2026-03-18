@@ -34,6 +34,7 @@
 #include "../SDK/class/IMaterialSystem.h"
 #include "../SDK/class/IMaterial.h"
 
+#include <intrin.h>
 
 /*
 * Priority TODO's:
